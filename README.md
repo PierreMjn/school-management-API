@@ -4,7 +4,7 @@
 
 > Reviewer: <https://github.com/PierreMjn>
 
-> Assigned engineer: Pierre MIJON - Zian LI - Lindrit HISENI - Gregory :clipboard:
+> Assigned engineer: Pierre MIJON - Zian LI - Lindrit HISENI - Gregory Mendes :clipboard:
 
 ## :mortar_board: Summary
 
@@ -45,15 +45,55 @@
 
 ## :scroll: Project context
 
-As part of the *Architecture and Software Quality* course, we have to design a fullstack school management application.
+As part of the **Architecture and Software Quality** course, we have to design a fullstack school management application.
 
 ## :dart: Assigned task
 
-In such a way, our team will focus on the user management system.
-
-## :construction_worker: Installation
+In such a way, our team will focus on the **user management system**.
 
 ## :beginner: To begin
+
+Provide yourself with an environment with [Wamp](https://www.wampserver.com/) and [NodeJS](https://nodejs.org/en/) installed.
+
+### :gear: Prerequisites
+
+What is **required** to get started with the project:
+
+- [Git](https://git-scm.com/)
+- [Wamp](https://www.wampserver.com/)
+    - Make sure you credentials are :
+        - **root** for username ;
+        - Empty password for password;
+    - Else, in the `db.config.js` file inside the `config` folder, change the credential in the URL as follow :
+    ```php
+    module.exports = {
+        HOST: "YOUR_HOST",
+        USER: "YOUR_USER",
+        PASSWORD: "YOUR_PASSWORD",
+        DB: "YOUR_DATABASE",
+        dialect: "mysql",
+        pool: {
+           max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
+    };
+    ```
+- [NodeJS](https://nodejs.org/en/)
+
+## :cd: Installation
+
+- **Clone** the development application on your space :
+
+    - **SSH** clone :
+    ```
+    git@github.com:PierreMjn/school-management-API.git
+    ```
+    - **HTTPs** Clone :
+    ```
+    https://github.com/PierreMjn/school-management-API.git
+    ```
 
 ## :pick: Made with
 
@@ -67,7 +107,7 @@ In such a way, our team will focus on the user management system.
 
 * **Lindrit HISENI** | [@Lindrit HISENI](mailto:lindrit.hiseni@edu.ece.fr)
 
-* **Gregory** | [@Gregory](mailto:pierre.mijon@edu.ece.fr)
+* **Gregory Mendes** | [@Gregory](mailto:gregory.mendes@edu.ece.fr)
 
 Students at [ECE Paris](https://www.ece.fr/).
 
