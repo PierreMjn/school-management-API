@@ -66,11 +66,6 @@ isPrinter = (req, res, next) => {
                     next();
                     return;
                 }
-
-                if (roles[i].name === "printer") {
-                    next();
-                    return;
-                }
             }
 
             res.status(403).send({

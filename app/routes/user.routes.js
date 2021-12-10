@@ -20,7 +20,7 @@ module.exports = function(app) {
 
     app.get(
         "/api/mod",
-        [authJwt.verifyToken, authJwt.isModerator],
+        [authJwt.verifyToken, authJwt.isProfessor],
         controller.professorBoard
     );
 
@@ -28,5 +28,11 @@ module.exports = function(app) {
         "/api/admin",
         [authJwt.verifyToken, authJwt.isAdmin],
         controller.adminBoard
+    );
+
+    app.get(
+        "/api/printer",
+        [authJwt.verifyToken, authJwt.isPrinter],
+        controller.printerBoard()
     );
 };
