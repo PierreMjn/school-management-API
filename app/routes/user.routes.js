@@ -33,6 +33,6 @@ module.exports = function(app) {
     app.get(
         "/api/printer",
         [authJwt.verifyToken, authJwt.isPrinter],
-        controller.printerBoard()
+        controller.printerBoard
     );
 };
