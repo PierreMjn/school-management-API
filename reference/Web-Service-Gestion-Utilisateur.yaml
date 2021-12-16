@@ -2,197 +2,472 @@ openapi: 3.1.0
 info:
   title: Web Service - Gestion Utilisateur
   version: '1.0'
+  summary: API-Gestion des Utilisateurs
+  description: API qui permet de gérer les utilisateurs notamment leur connexion à la plateforme.
+  contact:
+    name: Lindrit Pierre Zian
+    email: 21604@ecam.be
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'http://localhost:8080'
+    description: Localhost
 paths:
-  '/users/{userId}':
-    parameters:
-      - schema:
-          type: integer
-        name: userId
-        in: path
-        required: true
-        description: Id of an existing user.
-    get:
-      summary: Get User Info by User ID
-      tags: []
+  /api/auth/signup:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-api-auth-signup
+      description: Register a new user
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                roles:
+                  type: array
+                  items:
+                    type: string
+            examples:
+              add student:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - student
+              add teacher:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - teacher
+              add admin:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - admin
+              add printer:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - printer
+              add user several roles:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - teacher
+                    - admin
+        description: Data for creating a User based on his roles
       responses:
         '200':
-          description: User Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Get User Alice Smith:
-                  value:
-                    id: 142
-                    firstName: Alice
-                    lastName: Smith
-                    email: alice.smith@gmail.com
-                    dateOfBirth: '1997-10-31'
-                    emailVerified: true
-                    signUpDate: '2019-08-24'
-        '404':
-          description: User Not Found
+          description: OK
           content:
             application/json:
               schema:
                 type: object
-                properties: {}
-      operationId: get-users-userId
-      description: Retrieve the information of the user with the matching user ID.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: ''
-    patch:
-      summary: Update User Information
-      operationId: patch-users-userId
-      responses:
-        '200':
-          description: User Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
+                properties:
+                  message:
+                    type: string
               examples:
-                Updated User Rebecca Baker:
+                successful register:
                   value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: '1985-10-02'
-                    emailVerified: false
-                    createDate: '2019-08-24'
-        '404':
-          description: User Not Found
-        '409':
-          description: Email Already Taken
-      description: Update the information of an existing user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
-                dateOfBirth:
-                  type: string
-            examples:
-              Update First Name:
-                value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: '1985-10-02'
-        description: Patch user properties to update.
-  /user:
-    post:
-      summary: Create New User
-      operationId: post-user
-      responses:
-        '200':
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
+                    message: User Registered Successfully
+          headers: {}
         '400':
-          description: Missing Required Information
-        '409':
-          description: Email Already Taken
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                email error:
+                  value:
+                    message: Failed ! Email is already used
+          headers: {}
+  /api/auth/signin:
+    post:
+      summary: ''
+      operationId: post-api-auth-signin
+      description: Login into your user account
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
                 email:
                   type: string
-                dateOfBirth:
+                password:
                   type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
             examples:
-              Create User Bob Fellow:
+              login:
                 value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new user.
+                  email: myemail
+                  password: mypassword
+        description: Login credencials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  email:
+                    type: string
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                  accessToken:
+                    type: string
+              examples:
+                Connected as Student:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - student
+                    accessToken: string
+                Connected as Teacher:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - teacher
+                    accessToken: string
+                Connected as Admin:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - admin
+                    accessToken: string
+                Connected as Printer:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - printer
+                    accessToken: string
+                Connected as Teacher and Admin:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - teacher
+                      - admin
+                    accessToken: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: 'null'
+                  message:
+                    type: string
+              examples:
+                Invalid Password:
+                  value:
+                    accessToken: null
+                    message: Invalid Password
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                User not found:
+                  value:
+                    message: User not found
+  /api/all:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+            application/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Display public content:
+                  value: '[public content]'
+      operationId: get-api-all
+      description: Get public content
+  /api/student:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Display student content:
+                  value: '[student content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'Unauthorized ':
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                No token provided:
+                  value:
+                    message: No token provided
+      operationId: get-api-student
+      description: Get student content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/admin:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Admin content:
+                  value: '[Admin content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'No token provided ':
+                  value:
+                    message: No token provided
+      operationId: get-api-admin
+      description: Get admin content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/printer:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Printer content:
+                  value: '[Printer Content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: string
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                No token provided:
+                  value:
+                    message: No token provided
+      operationId: get-api-printer
+      description: Get printer content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/teacher:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Teacher content:
+                  value: '[Teacher content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'No token provided ':
+                  value:
+                    message: No token provided
+      operationId: get-api-teacher
+      description: Get teacher content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
 components:
   schemas:
     User:
       title: User
       type: object
-      description: ''
-      examples:
-        - id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
       properties:
         id:
           type: integer
-          description: Unique identifier for the given user.
-        firstName:
+        firstname:
           type: string
-        lastName:
+        lastname:
           type: string
         email:
           type: string
-          format: email
-        dateOfBirth:
+        password:
           type: string
-          format: date
-          example: '1997-10-31'
-        emailVerified:
-          type: boolean
-          description: Set to true if the user's email has been verified.
-        createDate:
+      description: 'Model of user '
+    Role:
+      title: Role
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
           type: string
-          format: date
-          description: The date that the user was created.
-      required:
-        - id
-        - firstName
-        - lastName
-        - email
-        - emailVerified
+      description: 'Role definition for user joining user model '
+  securitySchemes: {}
+x-access-token: Autogenerated token
