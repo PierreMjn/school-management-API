@@ -13,15 +13,15 @@ module.exports = function(app) {
     app.get("/api/all", controller.allAccess);
 
     app.get(
-        "/api/user",
+        "/api/student",
         [authJwt.verifyToken],
-        controller.userBoard
+        controller.studentBoard
     );
 
     app.get(
         "/api/mod",
-        [authJwt.verifyToken, authJwt.isProfessor],
-        controller.professorBoard
+        [authJwt.verifyToken, authJwt.isTeacher],
+        controller.teacherBoard
     );
 
     app.get(

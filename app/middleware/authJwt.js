@@ -41,7 +41,7 @@ isAdmin = (req, res, next) => {
     });
 };
 
-isProfessor = (req, res, next) => {
+isTeacher = (req, res, next) => {
     User.findByPk(req.userId).then(user => {
         user.getRoles().then(roles => {
             for (let i = 0; i < roles.length; i++) {
@@ -78,7 +78,7 @@ isPrinter = (req, res, next) => {
 const authJwt = {
     verifyToken: verifyToken,
     isAdmin: isAdmin,
-    isProfessor: isProfessor,
+    isTeacher: isTeacher,
     isPrinter: isPrinter
 };
 module.exports = authJwt;
