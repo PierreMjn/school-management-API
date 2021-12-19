@@ -1,0 +1,473 @@
+openapi: 3.1.0
+info:
+  title: Web Service - Gestion Utilisateur
+  version: '1.0'
+  summary: API-Gestion des Utilisateurs
+  description: API qui permet de gérer les utilisateurs notamment leur connexion à la plateforme.
+  contact:
+    name: Lindrit Pierre Zian
+    email: 21604@ecam.be
+servers:
+  - url: 'http://localhost:8080'
+    description: Localhost
+paths:
+  /api/auth/signup:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-api-auth-signup
+      description: Register a new user
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                roles:
+                  type: array
+                  items:
+                    type: string
+            examples:
+              add student:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - student
+              add teacher:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - teacher
+              add admin:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - admin
+              add printer:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - printer
+              add user several roles:
+                value:
+                  firstname: myfirstname
+                  lastname: mylastname
+                  email: myemail@gmail.com
+                  password: mypassword
+                  roles:
+                    - teacher
+                    - admin
+        description: Data for creating a User based on his roles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                successful register:
+                  value:
+                    message: User Registered Successfully
+          headers: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                email error:
+                  value:
+                    message: Failed ! Email is already used
+          headers: {}
+  /api/auth/signin:
+    post:
+      summary: ''
+      operationId: post-api-auth-signin
+      description: Login into your user account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            examples:
+              login:
+                value:
+                  email: myemail
+                  password: mypassword
+        description: Login credencials
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  email:
+                    type: string
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                  accessToken:
+                    type: string
+              examples:
+                Connected as Student:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - student
+                    accessToken: string
+                Connected as Teacher:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - teacher
+                    accessToken: string
+                Connected as Admin:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - admin
+                    accessToken: string
+                Connected as Printer:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - printer
+                    accessToken: string
+                Connected as Teacher and Admin:
+                  value:
+                    id: 0
+                    firstname: string
+                    lastname: string
+                    email: string
+                    roles:
+                      - teacher
+                      - admin
+                    accessToken: string
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: 'null'
+                  message:
+                    type: string
+              examples:
+                Invalid Password:
+                  value:
+                    accessToken: null
+                    message: Invalid Password
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                User not found:
+                  value:
+                    message: User not found
+  /api/all:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+            application/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Display public content:
+                  value: '[public content]'
+      operationId: get-api-all
+      description: Get public content
+  /api/student:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Display student content:
+                  value: '[student content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'Unauthorized ':
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                No token provided:
+                  value:
+                    message: No token provided
+      operationId: get-api-student
+      description: Get student content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/admin:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Admin content:
+                  value: '[Admin content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'No token provided ':
+                  value:
+                    message: No token provided
+      operationId: get-api-admin
+      description: Get admin content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/printer:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Printer content:
+                  value: '[Printer Content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: string
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                No token provided:
+                  value:
+                    message: No token provided
+      operationId: get-api-printer
+      description: Get printer content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+  /api/teacher:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: object
+                properties: {}
+              examples:
+                Teacher content:
+                  value: '[Teacher content]'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                Unauthorized:
+                  value:
+                    message: Unauthorized
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              examples:
+                'No token provided ':
+                  value:
+                    message: No token provided
+      operationId: get-api-teacher
+      description: Get teacher content
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: x-access-token
+          description: Account Token
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: integer
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      description: 'Model of user '
+    Role:
+      title: Role
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+      description: 'Role definition for user joining user model '
+  securitySchemes: {}
+x-access-token: Autogenerated token
