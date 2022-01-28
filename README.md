@@ -6,10 +6,6 @@
 
 > Assigned engineer: Pierre MIJON - Zian LI - Lindrit HISENI - Gregory Mendes :clipboard:
 
-## :mortar_board: Summary
-
-
-
 ---
 
 ## :evergreen_tree: Tree structure
@@ -96,9 +92,11 @@ What is **required** to get started with the project:
   
 ## :fire: Start-up
 
+- Make sure you have your wamp server **running**.
+- 
 - **Navigate** into the `backend` folder of the project with :
 ```shell
-cd backend
+cd school-managemnt-API
 ```
 - Then, install all the npm dependencies using :
 ```shell
